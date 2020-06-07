@@ -5,6 +5,7 @@ import dataDemo from "./demoData";
 import "./App.scss";
 
 import profile, { NameContext, EmailContext } from "./context/profieContext";
+import {BrowserRouter, Switch,Route,Link} from 'react-router-dom'
 
 // class App extends React.Component {
 //   constructor(props) {
@@ -155,29 +156,137 @@ import profile, { NameContext, EmailContext } from "./context/profieContext";
 //     );
 //   }
 // }
+
+
 let extrasConf = {
   art: 0,
   mathe: 5
 };
+
+function Home(props){
+  return(
+    <Link to="/art">请输入美术成绩</Link>
+  )
+}
+
+function Result(props){
+  console.log(props)
+  return(
+    <div>
+      <p>
+        email:<input
+          name="email"
+          value={props.email}
+          onChange={props.handelContextChange}
+          style={{ width: "200px" }}
+        />
+      </p>
+      <p>
+        name:{props.name}
+      </p>
+      <p>
+        _Subject:{props._Subject.map(e =>
+          <span key={e.code}>
+            {e.code}:{e.score}/
+          </span>
+        )}
+      </p>
+      <p>
+        _Average:{props._Average}
+      </p>
+      <p>
+        Extras_Average: {props.extras_Average}
+      </p>
+    </div>
+  )
+}
+
+function ArtCalculator(props){
+  return(
+    <div className="average_warp">
+        <Link to="/math">请输入数学成绩</Link>
+       
+        <button onClick={props.toggle} value="Art">
+          显示/影藏
+        </button>
+        <NameContext.Provider
+          value={{
+            name: props.name,
+            changeName: props.handelContextChange
+          }}
+        >
+          {props.showArt &&
+            <Art
+              title="请计算美术成绩"
+              onExtrasChange={props.handelExtrasCb}
+              extrasElm={(extras, handelExtras) => {
+                extrasConf.art = extras;
+                return (
+                  <p>
+                    extras:<input
+                      type="number"
+                      name="art"
+                      value={extras}
+                      onChange={handelExtras}
+                    />
+                  </p>
+                );
+              }}
+            />}
+        </NameContext.Provider>
+      </div>
+  )
+}
+
+function MathCalcultor(props){
+  return(
+    <div className="average_warp">
+      <Link to="/result">查看结果</Link>
+    <button onClick={props.toggle} value="Math">
+      显示/影藏
+    </button>
+    <EmailContext.Provider value={props.email}>
+      {props.showMath &&
+        <Mathe title="请计算数学成绩">
+          <p>
+            extras:<input
+              type="range"
+              min="-20"
+              max="20"
+              step="5"
+              name="mathe"
+              value={props.matcheExtra}
+              onChange={props.handelExtrasCb}
+            />
+            <span>{props.matcheExtra}</span>
+          </p>
+        </Mathe>}
+    </EmailContext.Provider>
+  </div>
+  )
+}
+
 function App() {
   let [_Average, set_Average] = useState("");
-  dataDemo.aerageChangeCb = _Average => {
-    set_Average(_Average);
+  dataDemo.aerageChangeCb = Average => {
+    set_Average(Average);
     handelExtras_Average();
   };
   let [_Subject, set_Subject] = useState([]);
-  dataDemo.subjectChangeCb = _Subject => {
-    set_Subject(_Subject);
+  dataDemo.subjectChangeCb = Subject => {
+    set_Subject(Subject);
+   
   };
   let [extras_Average, setExtras_Average] = useState(null);
   function handelExtras_Average() {
-    let extras_Average = null;
+    let tempextras_Average = null;
     let totle = 0;
     dataDemo._TotalSubject.forEach(e => {
       totle += e.score + parseInt(extrasConf[e.code], 10);
     });
-    extras_Average = (totle / dataDemo._TotalSubject.length).toFixed(2);
-    setExtras_Average(extras_Average);
+    tempextras_Average = (totle / dataDemo._TotalSubject.length).toFixed(2);
+    setExtras_Average(tempextras_Average);
+    
   }
   let [matcheExtra, setMatcheExtra] = useState(extrasConf.mathe);
   function handelExtrasCb(e) {
@@ -210,9 +319,11 @@ function App() {
       setEmail(e.target.value);
     }
   }
+
+  console.log("ll",_Subject,_Average)
   return (
     <div className="average_warp">
-      <p>
+      {/* <p>
         email:<input
           name="email"
           value={email}
@@ -289,7 +400,23 @@ function App() {
               </Mathe>}
           </EmailContext.Provider>
         </div>
-      </div>
+      </div> */}
+      
+      <BrowserRouter>
+        <Switch>
+            <Route exact path="/home" component={Home}></Route>
+            <Route exact path="/art" render={()=><ArtCalculator toggle={toggle}
+            name={name} handelContextChange={handelContextChange} showArt={showArt} handelExtras={handelExtrasCb}/>}></Route>
+            <Route exact path="/math" render={()=><MathCalcultor toggle={toggle}
+            email={email} showMath={showMath} matcheExtra={matcheExtra} handelExtrasCb={handelExtrasCb}/>}></Route>
+            {/* <Route exact path="/result" render={({match,...rest})=><Result email={email} 
+            handelContextChange={handelContextChange} name={name} _Subject={_Subject} _Average={_Average}
+            extras_Average={extras_Average}/> }></Route> */}
+             <Route exact path="/result" render={({match,...rest})=><Result {...rest} email={email} 
+            handelContextChange={handelContextChange} name={name} _Subject={_Subject} _Average={_Average}
+            extras_Average={extras_Average}/> }></Route>
+        </Switch>
+      </BrowserRouter>
     </div>
   );
 }
