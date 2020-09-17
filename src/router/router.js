@@ -1,22 +1,23 @@
 import Art from '../components/artCalculator'
 import Mathe from '../components/MathCalulator'
-import Home from '../components/Home'
+import home from '../App'
   const routerlist=[
-    {   
-        tap:"首页",
-        path:"/Home",
-        component:Home,
-    },
+ 
     {
-        tap:"艺术计算器",
+        tap:"输入艺术成绩",
         path:"/artCalculator",
         component:Art,
     },
 
     {   
-        tap:"数学计算器",
+        tap:"输入数学成绩",
         path:"/mathCalculator",
         component:Mathe,
+    },
+    {
+        tap:"查看结果",
+        path:"/Home",
+        component:home,
     }
     
 ]

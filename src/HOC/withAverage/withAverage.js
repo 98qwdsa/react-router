@@ -7,12 +7,12 @@ export default function withAverage(Warp, subject) {
     componentDidMount() {
       demoData._addSubject(subject);
     }
-    componentWillUnmount() {
-      demoData._removeSubject(subject);
-    }
-    _removeSubject(sub) {
-      sub && demoData._removeSubject(sub);
-    }
+    // componentWillUnmount() {
+    //   demoData._removeSubject(subject);
+    // }
+    // _removeSubject(sub) {
+    //   sub && demoData._removeSubject(sub);
+    // }
     _editScore(score) {
       demoData._editScore({ ...subject, ...{ score } });
     }

@@ -4,9 +4,9 @@ export default function useAverage(subject) {
   useEffect(
     () => {
       demoData._addSubject(subject);
-      return () => {
-        demoData._removeSubject(subject);
-      };
+      // return () => {
+      //   demoData._removeSubject(subject);
+      // };
     },
     [subject.code]
   );

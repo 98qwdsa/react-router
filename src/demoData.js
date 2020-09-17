@@ -13,13 +13,13 @@ const DataSource = {
     this._TotalSubject.push(subject);
     this.subjectChangeCb && this.subjectChangeCb(this._TotalSubject);
   },
-  _removeSubject(subject) {
-    this._TotalSubject = this._TotalSubject.filter(e => {
-      return e.code !== subject.code;
-    });
-    this._setAerage();
-    this.subjectChangeCb && this.subjectChangeCb(this._TotalSubject);
-  },
+  // _removeSubject(subject) {
+  //   this._TotalSubject = this._TotalSubject.filter(e => {
+  //     return e.code !== subject.code;
+  //   });
+  //   this._setAerage();
+  //   this.subjectChangeCb && this.subjectChangeCb(this._TotalSubject);
+  // },
   _editScore(subject) {
     this._TotalSubject = this._TotalSubject.map(e => {
       if (e.code === subject.code) {

@@ -1,9 +1,8 @@
 import React, {useContext,useState} from "react";
 import Calculator from "../Calculator/Calculator";
-import { EmailContext } from "../../context/profieContext";
+import { EmailContext, } from "../../context/profieContext";
 import useAverage from "../../hooks/useAverage";
-import '../../App.scss';
-import link from '../../link/link'
+import dataDemo from "../../demoData";
 
 // class Mathe extends React.Component {
 //   static subject = { code: "mathe", score: 0 };
@@ -12,25 +11,23 @@ import link from '../../link/link'
 //   return <><span>{this.context}</span><Calculator cb={this.props._editScore} />{this.props.children}</>;
 //   }
 // }
-function Mathe(){
-  const context = useContext(EmailContext);//use
-  const callbacks = useAverage({ code: "mathe", score: 0 });
-  let[showMath,setShowMath]=useState(true)
+function Mathe(props){
+  let [showMath,setShowMath]=useState(true);
   function toggle(){
-      setShowMath(!showMath);
+    setShowMath(!showMath)
   }
+  const context = useContext(EmailContext);
+  const callbacks = useAverage({ code: "mathe", score: 0 });
   return (<>
-  <div className="average_warp">
-
-   <button onClick={toggle} value="Math">
+  <button onClick={toggle} value="math">
             显示/影藏
           </button>
     <p>
-     
+    {props.title}
     </p>
-    <span>{showMath&&context}</span>
-    {showMath&& <Calculator title="请输入数学成绩" cb={callbacks._editScore} />}
-    </div>
+    
+     {showMath&&<span>{context}</span>}
+    {showMath&&<Calculator cb={callbacks._editScore} />}
     </>);
 }
 export default Mathe;
