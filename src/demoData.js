@@ -10,6 +10,9 @@ const DataSource = {
     this.aerageChangeCb && this.aerageChangeCb(this._Average);
   },
   _addSubject(subject) {
+    this._TotalSubject = this._TotalSubject.filter(e => {
+        return e.code !== subject.code;
+       });
     this._TotalSubject.push(subject);
     this.subjectChangeCb && this.subjectChangeCb(this._TotalSubject);
   },
